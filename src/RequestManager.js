@@ -21,12 +21,15 @@ class RequestManager extends React.Component {
         }
     }
 
+    source = null;
+
     request = ()=> {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
+        
+        this.source = axios.CancelToken.source();
+        
         axios.get(url, {
-            cancelToken: source.token
-          })
+            cancelToken: this.source.token
+        })
         .then(res => {
             const massage = res.data.body;
             this.setState(
@@ -40,14 +43,11 @@ class RequestManager extends React.Component {
                 massageError: "error",
                 massage: ""});
           })
-          this.stopRequest = ()=> {
-            source.cancel();
-        };
           this.toogleUrl();
     }
 
     stopRequest = ()=> {
-
+        this.source.cancel();
     }
 
     render() {
